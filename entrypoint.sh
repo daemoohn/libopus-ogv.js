@@ -23,7 +23,7 @@ if [ ! -f configure ]; then
   sed -i.bak 's/$srcdir\/configure/#/' autogen.sh
   ./autogen.sh
   
-  # disable oggpack_writealign test
+  # disable oggxpack_writealign test
   sed -i.bak 's/$ac_cv_func_oggpack_writealign/yes/' configure
 fi
 cd ..
@@ -44,9 +44,13 @@ cd libopus
 
 # finally, run configuration script
 emconfigure ../../../opus/configure \
-    --prefix="$dir/build/js/root" \
-    --disable-shared \
-|| exit 1
+  --disable-asm \
+  --disable-intrinsics \
+  --disable-doc \
+  --disable-extra-programs \
+  --prefix="$dir/build/js/root" \
+  --disable-shared \
+  CFLAGS="-O3" || exit 1
 
 # compile libopus
 emmake make -j4 || exit 1
